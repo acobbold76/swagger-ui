@@ -1,0 +1,1143 @@
+swagger: "2.0"
+info:
+  description: "This swagger has been designed for CMHC IAM APIs"
+  version: "1.0.0"
+  title: "CMHC IAM-APIs"  
+host: 'localhost'
+basePath: "/identity/api/v1.0"
+tags:
+- name: "IAM-APIs"
+  description: "IAM-APIs"
+schemes:
+- "https"
+paths:
+  /getToken:
+    post:
+      tags:
+      - "IAM-APIs"
+      summary: "Return Authentication Token."
+      description: "This token must be used to invoke all API calls."
+      operationId: "getToken"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "recognition-identity-id"
+        in: "header"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Request JSON Object."
+        required: true
+        schema:
+          $ref: "#/definitions/getTokenRequest"  
+      responses:
+        "200":
+          description: "Success."
+          schema:
+            $ref: "#/definitions/getTokenResponse"
+        "401":
+          description: "Unauthorized. Recoznition ID are not correct."
+        "407":  
+          description: "Authentication failed."
+          schema:
+            $ref: "#/definitions/authenticateUserFailed"
+      security:
+      - Authorization: []
+      - recognition-identity-id : []
+  /addNewGroup:
+    post:
+      tags:
+      - "IAM-APIs"
+      summary: "Add a group in AD."
+      description: ""    
+      operationId: "addNewGroup"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        required: true
+        type: "string"
+      - name: "recognition-identity-id"
+        in: "header"
+        required: true
+        type: "string"  
+      - in: "body"
+        name: "body"
+        description: "Request JSON Object."
+        required: true
+        schema:
+          $ref: "#/definitions/addNewGroupRequest"
+      responses:
+        "201":
+          description: "Created."
+          schema:
+            $ref: "#/definitions/addNewGroupResponse"
+        "401":
+          description: "Unauthorized. Authorization/Recoznition ID are not correct."
+        "412":
+          description: "Mandatory fields are missing. Please check the JSON request pay load."
+        "424":
+          description: "OU does not exist in the Active Directory.."
+        "417":
+          description: "Group creation failed"
+      security:
+      - Authorization: []
+      - recognition-identity-id : []
+  /deleteExistingGroup:
+    delete:
+      tags:
+      - "IAM-APIs"
+      summary: "Delete a group from AD."
+      description: ""    
+      operationId: "deleteExistingGroup"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        required: true
+        type: "string"
+      - name: "recognition-identity-id"
+        in: "header"
+        required: true
+        type: "string"  
+      - in: "body"
+        name: "body"
+        description: "Request JSON Object."
+        required: true
+        schema:
+          $ref: "#/definitions/deleteExistingGroupRequest"
+      responses:
+        "200":
+          description: "Success."
+          schema:
+            $ref: "#/definitions/deleteExistingGroupResponse"
+        "401":
+          description: "Unauthorized. Authorization/Recoznition ID are not correct."
+        "412":
+          description: "Mandatory fields are missing. Please check the JSON request pay load."  
+      security:
+      - Authorization: []
+      - recognition-identity-id : []
+  /updateGroupDetails:
+    post:
+      tags:
+      - "IAM-APIs"
+      summary: "Update a group on AD."
+      description: ""    
+      operationId: "updateGroupDetails"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        required: true
+        type: "string"
+      - name: "recognition-identity-id"
+        in: "header"
+        required: true
+        type: "string"  
+      - in: "body"
+        name: "body"
+        description: "Request JSON Object."
+        required: true
+        schema:
+          $ref: "#/definitions/updateGroupDetailsRequest"
+      responses:
+        "200":
+          description: "Success."
+          schema:
+            $ref: "#/definitions/updateGroupDetailsResponse"
+        "401":
+          description: "Unauthorized. Authorization/Recoznition ID are not correct."
+      security:
+      - Authorization: []
+      - recognition-identity-id : []
+  /getListofGroups:
+    get:
+      tags:
+      - "IAM-APIs"
+      summary: "Get list of groups from AD."
+      description: ""    
+      operationId: "getListofGroups"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        required: true
+        type: "string"
+      - name: "recognition-identity-id"
+        in: "header"
+        required: true
+        type: "string"  
+      - name: "strParentOUName"
+        in: "query"
+        description: "strParentOUName"
+        required: true
+        type: "string" 
+      - name: "strOUName"
+        in: "query"
+        description: "strOUName"
+        required: true
+        type: "string"  
+      responses:
+        "200":
+          description: "Success."
+          schema:
+            $ref: "#/definitions/getListofGroupResponse"
+        "401":
+          description: "Unauthorized. Authorization/Recoznition ID are not correct."
+      security:
+      - Authorization: []
+      - recognition-identity-id : []
+  
+  /addUsersInGroup:
+    post:
+      tags:
+      - "IAM-APIs"
+      summary: "Add user/users to group in AD."
+      description: ""    
+      operationId: "addUserInGroup"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        required: true
+        type: "string"
+      - name: "recognition-identity-id"
+        in: "header"
+        required: true
+        type: "string"  
+      - in: "body"
+        name: "body"
+        description: "Request JSON Object."
+        required: true
+        schema:
+          $ref: "#/definitions/addUserInGroupRequest"
+      responses:
+        "200":
+          description: "Success."
+          schema:
+            $ref: "#/definitions/addUserInGroupResponse"
+        "401":
+          description: "Unauthorized. Authorization/Recoznition ID are not correct."
+      security:
+      - Authorization: []
+      - recognition-identity-id : []
+  /moveUsersFromGroup:
+    post:
+      tags:
+      - "IAM-APIs"
+      summary: "Move an user between groups in AD."
+      description: ""    
+      operationId: "moveUserFromGroup"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        required: true
+        type: "string"
+      - name: "recognition-identity-id"
+        in: "header"
+        required: true
+        type: "string"  
+      - in: "body"
+        name: "body"
+        description: "Request JSON Object."
+        required: true
+        schema:
+          $ref: "#/definitions/moveUserFromGroupRequest"
+      responses:
+        "200":
+          description: "Success."
+          schema:
+            $ref: "#/definitions/moveUserFromGroupResponse"
+        "401":
+          description: "Unauthorized. Authorization/Recoznition ID are not correct."
+      security:
+      - Authorization: []
+      - recognition-identity-id : []
+  /deleteUsersFromGroup:
+    delete:
+      tags:
+      - "IAM-APIs"
+      summary: "Delete user/users from a group from AD."
+      description: ""    
+      operationId: "deleteUserFromGroup"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        required: true
+        type: "string"
+      - name: "recognition-identity-id"
+        in: "header"
+        required: true
+        type: "string"  
+      - in: "body"
+        name: "body"
+        description: "Request JSON Object."
+        required: true
+        schema:
+          $ref: "#/definitions/addUserInGroupRequest"
+      responses:
+        "200":
+          description: "Success."
+          schema:
+            $ref: "#/definitions/deleteUserFromGroupResponse"
+        "401":
+          description: "Unauthorized. Authorization/Recoznition ID are not correct."
+      security:
+      - Authorization: []
+      - recognition-identity-id : []  
+  /authorizeUser:
+    post:
+      tags:
+      - "IAM-APIs"
+      summary: "Authorize a user if he is a part of any specific group."
+      description: ""
+      operationId: "authorizeUser"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        required: true
+        type: "string"
+      - name: "recognition-identity-id"
+        in: "header"
+        required: true
+        type: "string"  
+      - in: "body"
+        name: "body"
+        description: "Request JSON Object."
+        required: true
+        schema:
+          $ref: "#/definitions/authorizeUserRequest"
+      responses:
+        "200":
+          description: "Successful."
+          schema:
+            $ref: "#/definitions/authorizeUserResponse"
+        "401":
+          description: "Unauthorized. Authorization/Recoznition ID are not correct."
+        "109":  
+          description: "Authentication failed."
+          schema:
+            $ref: "#/definitions/authenticateUserFailed"
+      security:
+      - Authorization: []
+      - recognition-identity-id : []
+  /createNewUser:
+    post:
+      tags:
+      - "IAM-APIs"
+      summary: "Creates a new user in AD."
+      description: ""    
+      operationId: "createNewUser"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        required: true
+        type: "string"
+      - name: "recognition-identity-id"
+        in: "header"
+        required: true
+        type: "string"  
+      - in: "body"
+        name: "body"
+        description: "Request JSON Object."
+        required: true
+        schema:
+          $ref: "#/definitions/createNewUserRequest"
+      responses:
+        "201":
+          description: "Created."
+          schema:
+            $ref: "#/definitions/createNewUserResponse"
+        "401":
+          description: "Unauthorized. Authorization/Recoznition ID are not correct."
+      security:
+      - Authorization: []
+      - recognition-identity-id : []   
+  /deleteExistingUsers:
+    delete:
+      tags:
+      - "IAM-APIs"
+      summary: "Delete user/users in AD."
+      description: ""    
+      operationId: "deleteExistingUsers"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        required: true
+        type: "string"
+      - name: "recognition-identity-id"
+        in: "header"
+        required: true
+        type: "string"  
+      - in: "body"
+        name: "body"
+        description: "Request JSON Object."
+        required: true
+        schema:
+          $ref: "#/definitions/deleteExistingUserRequest"
+      responses:
+        "200":
+          description: "Success."
+          schema:
+            $ref: "#/definitions/deleteExistingUserResponse"
+        "401":
+          description: "Unauthorized. Authorization/Recoznition ID are not correct."
+      security:
+      - Authorization: []
+      - recognition-identity-id : []
+  /editUserDetails:
+    post:
+      tags:
+      - "IAM-APIs"
+      summary: "Update a user on AD."
+      description: ""    
+      operationId: "editUserDetails"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        required: true
+        type: "string"
+      - name: "recognition-identity-id"
+        in: "header"
+        required: true
+        type: "string"  
+      - in: "body"
+        name: "body"
+        description: "Request JSON Object."
+        required: true
+        schema:
+          $ref: "#/definitions/editUserDetailsRequest"
+      responses:
+        "200":
+          description: "Success."
+          schema:
+            $ref: "#/definitions/editUserDetailsResponse"
+        "401":
+          description: "Unauthorized. Authorization/Recoznition ID are not correct."
+      security:
+      - Authorization: []
+      - recognition-identity-id : []
+
+  /getUserListFromGroup:
+    get:
+      tags:
+      - "IAM-APIs"
+      summary: "List Users from a OU."
+      description: ""    
+      operationId: "getUserListFromGroup"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        required: true
+        type: "string"
+      - name: "recognition-identity-id"
+        in: "header"
+        required: true
+        type: "string"
+      - name: "strGroupName"
+        in: "query"
+        description: "strGroupName"
+        required: true
+        type: "string" 
+      - name: "pageNo"
+        in: "query"
+        description: "pageNo"
+        required: false
+        type: "string" 
+      - name: "pageSize"
+        in: "query"
+        description: "pageSize"
+        required: false
+        type: "string"   
+      
+      responses:
+        "200":
+          description: "Success."
+          schema:
+            $ref: "#/definitions/getUserListFromGroupResponse"
+        "401":
+          description: "Unauthorized. Authorization/Recoznition ID are not correct."
+      security:
+      - Authorization: []
+      - recognition-identity-id : []      
+    
+  /getUserDetails:
+    get:
+      tags:
+      - "IAM-APIs"
+      summary: "Get details of a user from AD."
+      description: ""
+      operationId: "getUserDetails"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        required: true
+        type: "string"
+      - name: "recognition-identity-id"
+        in: "header"
+        required: true
+        type: "string"
+      - name: "strLogonName"
+        in: "query"
+        description: "strLogonName"
+        required: true
+        type: "string"  
+      responses:
+        "200":
+          description: "Successful."
+          schema:
+            $ref: "#/definitions/getUserDetailsResponse"
+        "401":
+          description: "Unauthorized. Authorization/Recoznition ID are not correct."
+        "404":  
+          description: "User does not exist."
+          schema:
+            $ref: "#/definitions/getUserDetailsNotExist"
+      security:
+      - Authorization: []
+      - recognition-identity-id : [] 
+  /checkHealth:
+    get:
+      tags:
+      - "IAM-APIs"
+      summary: "Get health of APIs."
+      description: ""
+      operationId: "checkHealth"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        required: true
+        type: "string"
+      - name: "recognition-identity-id"
+        in: "header"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Successful."
+          schema:
+            $ref: "#/definitions/checkHealthResponse"
+        "401":
+          description: "Unauthorized. Authorization/Recoznition ID are not correct."
+      security:
+      - Authorization: []
+      - recognition-identity-id : []        
+securityDefinitions:
+  Authorization:
+    type: "apiKey"
+    name: "api_key"
+    in: "header"
+  recognition-identity-id:
+    type: "apiKey"
+    name: "api_key"
+    in: "header"  
+definitions:
+  authenticateUserRequest:
+    type: "object"
+    required:
+    - "logonName"
+    - "password"
+    properties:
+      logonName:
+        type: "string"
+        example: "TESTUSER"
+      password:
+        type: "string"
+        example: "8P5cQ5S33II8T7Paq1ok"  
+    xml:
+      name: "authenticateUserRequest" 
+  authenticateUserResponse:
+    type: "object"
+    properties:
+      domainName:
+        type: "string"
+        example: ""
+      code:
+        type: "integer"
+        format: "int64"
+        example: "200"
+      message:
+        type: "string"
+        example: "User authenticated successfully"
+      externalAppName:
+        type: "string"
+        example: "" 
+      supportUser:
+        type: "string"
+        example: ""  
+    xml:
+      name: "authenticateUserResponse"     
+  authenticateUserFailed:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int64"
+        example: "407"
+      message:
+        type: "string"
+        example: "Authentication failed. Please check username/password"
+    xml:
+      name: "authenticateUserFailed"
+  getTokenRequest:
+    type: "object"
+    required:
+    - "username"
+    - "password"
+    properties:
+      username:
+        type: "string"
+        example: "TESTUSER"
+      password:
+        type: "string"
+        example: "8P5cQ5S33II8T7Paq1ok"  
+    xml:
+      name: "getTokenRequest"
+  getTokenResponse:
+    type: "object"
+    properties:
+      jwt:
+        type: "string"
+        example: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpYW0iLCJleHAiOjE1ODg3ODAyMDQsImlhdCI6MTU4ODc3MjE1Nn0.TZeF_xG18aqQBVWlAh384MZpITsS9c3TJ6n9nuodbIc"
+    xml:
+      name: "getTokenResponse"
+  addNewGroupRequest:
+    type: "object"
+    required:
+    - "parentOUName"
+    - "subOUName"
+    - "groupName"
+    properties:
+      parentOUName:
+        type: "string"
+        example: "NEXTGENxrep01"
+      subOUName:
+        type: "string"
+        example: "NEXTGENoSMT01"
+      groupName:
+        type: "string"
+        example: "TESTGROUP"  
+    xml:
+      name: "addNewGroupRequest" 
+  addNewGroupResponse:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int64"
+        example: "201"
+      message:
+        type: "string"
+        example: "New group created successfully"
+     
+    xml:
+      name: "addNewGroupResponse"
+  createNewUserRequest:
+    type: "object"
+    properties:
+      userDetails:
+        type: "array"
+        items:
+          $ref: '#/definitions/UserAttributes'
+    xml:
+       name: "createNewUserRequest"
+  createNewUserResponse:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int64"
+        example: "201"
+      message:
+        type: "string"
+        example: "Test user has been created successfully"
+    xml:
+      name: "createNewUserResponse"           
+  UserAttributes:
+    type: object
+    properties:
+      eMail:
+        type: string
+        example: "test@abc.com"  
+      logonName:
+        type: string
+        example: "firstname.lastname"
+      firstName:
+        type: string
+        example: "FirstName"
+      groupList:
+        type: array
+        items:
+          type: string
+        example: "[vault_users,vault_admins]"  
+      lastName:
+        type: string
+        example: "LastName"
+      orgUnitName:
+        type: string
+        example: "NEToSMT01"
+      parentOUName:
+        type: string
+        example: "NETxep01"    
+  deleteExistingGroupRequest:
+    type: "object"
+    required:
+    - "groupName"
+    properties:
+       groupName:
+        type: "string"
+        example: "TESTGROUP"  
+    xml:
+      name: "deleteExistingGroupRequest" 
+  deleteExistingGroupResponse:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int64"
+        example: "200"
+      message:
+        type: "string"
+        example: "Group has been deleted successfully"
+     
+    xml:
+      name: "deleteExistingGroupResponse"
+  updateGroupDetailsRequest:
+    type: "object"
+    required:
+    - "existingGroupName"
+    - "newGroupName"
+    properties:
+      existingGroupName:
+        type: "string"
+        example: "TESTGROUP"
+      newGroupName:
+        type: "string"
+        example: "TESTGROUPNEW"   
+    xml:
+      name: "updateGroupDetailsRequest" 
+  updateGroupDetailsResponse:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int64"
+        example: "200"
+      message:
+        type: "string"
+        example: "Group details are updated successfully"
+     
+    xml:
+      name: "updateGroupDetailsResponse" 
+  getListofGroupResponse:
+    type: "object"
+    properties:
+      totalNumberOfGroups:
+        type: "string"
+        example: ""
+      groupList:
+        type: "array"
+        items:
+          type: "string"
+        example: "[vault_users,vault_admins]"
+    xml:
+      name: "getListofGroupResponse" 
+  addUserInGroupRequest:
+    type: "object"
+    required:
+    - "groupName"
+    - "members"
+    properties:
+      groupName:
+        type: "string"
+        example: "test_group"
+      memnbers:
+        type: "array"
+        items:
+          type: "string"
+        example: "[USER1,USER2]"
+  addUserInGroupResponse:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int64"
+        example: "200"
+      message:
+        type: "string"
+        example: "Users successfully added to group"
+  moveUserFromGroupRequest:
+    type: "object"
+    required:
+    - "userDetails"
+    properties:
+      userDetails:
+        type: "array"
+        items:
+          $ref: '#/definitions/MoveUserFromGroupAttributes'  
+  MoveUserFromGroupAttributes:
+    type: object
+    properties:
+      memnbers:
+        type: string
+        example: "test_user"
+      groupName:
+        type: string
+        example: "oldGroupName" 
+      newGroupName:
+        type: string
+        example: "newGroupName"   
+  moveUserFromGroupResponse:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int64"
+        example: "200"
+      message:
+        type: "string"
+        example: "User moved successfully"       
+  deleteUserFromGroupResponse:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int64"
+        example: "200"
+      message:
+        type: "string"
+        example: "User(s) removed successfully from group test"  
+  authorizeUserRequest:
+    type: "object"
+    required:
+    - "logonName"
+    - "groupName"
+    properties:
+      logonName:
+        type: "string"
+        example: "TESTUSER"
+      groupName:
+        type: "string"
+        example: ""  
+    xml:
+      name: "authorizeUserRequest" 
+  authorizeUserResponse:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int64"
+        example: "160"
+      message:
+        type: "string"
+        example: "You are authorized to access the application with Support user access."
+      userAccess:
+        type: boolean
+        example: false  
+    xml:
+      name: "authorizeUserResponse"
+  deleteExistingUserRequest:
+    type: "object"
+    required:
+      - "userDetails"
+    properties:
+      userDetails:
+        type: array
+        items:
+          $ref: '#/definitions/deleteUserAttributes'
+    xml:
+      name: "deleteExistingUserRequest"
+  deleteUserAttributes:
+    type: object
+    properties: 
+      logonName:
+        type: string
+        example: "test_user"
+         
+  deleteExistingUserResponse:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int64"
+        example: "200"
+      message:
+        type: "string"
+        example: "User has been deleted successfully"
+     
+    xml:
+      name: "deleteExistingGroupResponse"      
+  editUserDetailsRequest:
+    type: "object"
+    required:
+    - "userDetails"
+    properties:
+      userDetails:
+        type: "array"
+        items:
+          $ref: '#/definitions/EditUserAttributes'   
+    xml:
+      name: "editUserDetailsRequest" 
+  EditUserAttributes:
+    type: object
+    properties:
+      groups:
+        type: array
+        items:
+          type: string
+        example: "[vault_users,vault_admins]"
+      eMail:
+        type: string
+        example: "abc@yzx.com"
+      firstName:
+        type: string
+        example: "FIRSTNAME"
+      lastName:
+        type: string
+        example: "LASTNAME"
+      logonName:
+        type: string
+        example: "test_user"
+  editUserDetailsResponse:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int64"
+        example: "200"
+      message:
+        type: "string"
+        example: "All details are updated successfully"
+     
+    xml:
+      name: "updateGroupDetailsResponse" 
+  getUserDetailsResponse:
+    type: "object"
+    properties:
+      firstName:
+        type: "string"
+        example: ""
+      lastName:
+        type: "string"
+        example: ""
+      logonName:
+        type: "string"
+        example: "" 
+      eMail:
+        type: "string"
+        example: "" 
+      userAccountStatus:
+        type: "string"
+        example: ""
+      parentOUName:
+        type: "string"
+        example: ""
+      softwareName:
+        type: "string"
+        example: "" 
+      ouName:
+        type: "string"
+        example: "" 
+      distinguisedName:
+        type: "string"
+        example: "" 
+      userPrincipleName:
+        type: "string"
+        example: ""
+      memberOf:
+        type: "array"
+        items:
+          type: "string"
+        example: "[AdminGroup,UserGroup]"
+      orgUnitName:
+        type: "string"
+        example: ""
+      lastlogin:
+        type: "string"
+        example: ""  
+    xml:
+      name: "getUserDetailsResponse" 
+  getUserDetailsNotExist:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int64"
+        example: "404"
+      message:
+        type: "string"
+        example: "{User ID} does not exist."
+    xml:
+      name: "getUserDetailsNotExist"
+  getUserListFromGroupResponse:
+    type: "object"
+    properties:
+      responseCode:
+        type: "integer"
+        format: "int64"
+        example: "200"
+      totalNumberOfUsers:
+        type: "string"
+        example: "1"  
+      userList:
+        type: "array"
+        items:
+          $ref: '#/definitions/getUserListFromGroupAttributes'
+  checkHealthResponse:
+    type: "object"
+    properties:
+      responseCode:
+        type: "integer"
+        format: "int64"
+        example: "500"
+      responseMessage:
+        type: "string"
+        example: "Please find following service metrics of APIs Health."  
+      apiServiceHealth:
+         $ref: "#/definitions/apiServiceHealth"
+      jreVersionPath:
+        $ref: "#/definitions/jreVersionPath"
+      ldapConnection:
+        $ref: "#/definitions/ldapConnection"   
+    xml:
+      name: "checkHealthResponse"     
+  apiServiceHealth:
+    type: "object"
+    properties:
+      healthCheckCode:
+        type: "integer"
+        format: "int64"
+        example: "802"
+      apiServicesHealth:
+        type: "string"
+        example: "UP"
+    xml:
+      name: "apiServiceHealth"
+  jreVersionPath:
+    type: "object"
+    properties:
+      healthCheckCode:
+        type: "integer"
+        format: "int64"
+        example: "807"
+      javaPath:
+        type: "string"
+        example: "C:\\Program Files\\Java\\jdk-11.0.6.10-hotspot"
+      javaRunTimeEnvironmentName:
+        type: "string"
+        example: "OpenJDK Runtime Environment"
+      javaRunTimeEnvironmentVersion:
+        type: "string"
+        example: "11.0.6+10"  
+    xml:
+      name: "jreVersionPath" 
+  ldapConnection:
+    type: "object"
+    properties:
+      healthCheckCode:
+        type: "integer"
+        format: "int64"
+        example: "801"
+      healthCheckMessage:
+        type: "string"
+        example: "Successfully connected to LDAP"
+      domainName:
+        type: "string"
+        example: "NEXTGEN"  
+    xml:
+      name: "ldapConnection"
+  getUserListFromGroupAttributes:
+    type: "object"
+    properties:
+      firstName:
+        type: "string"
+        example: ""
+      lastName:
+        type: "string"
+        example: ""
+      logonName:
+        type: "string"
+        example: "" 
+      eMail:
+        type: "string"
+        example: "" 
+      userAccountStatus:
+        type: "string"
+        example: ""
+      parentOUName:
+        type: "string"
+        example: ""
+      softwareName:
+        type: "string"
+        example: "" 
+      ouName:
+        type: "string"
+        example: "" 
+      distinguisedName:
+        type: "string"
+        example: "" 
+      userPrincipleName:
+        type: "string"
+        example: ""
+      memberOf:
+        type: "array"
+        items:
+          type: "string"
+        example: "[AdminGroup,UserGroup]"
+      orgUnitName:
+        type: "string"
+        example: ""
+    xml:
+      name: "getUserListFromOUAttributes"     
+     
